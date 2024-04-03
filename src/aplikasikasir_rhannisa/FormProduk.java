@@ -250,17 +250,17 @@ mulai();        // TODO add your handling code here:
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
 try {
-    String idproduk = txtInputProduk.getText();
+    String ProdukID = txtInputProduk.getText();
     String namaproduk = txtNamaProduk.getText();
     String harga = txtHarga.getText();
     String stok = txtStok.getText();
     
-    String sql = "update produk set NamaProduk='"+namaproduk+"', Harga='"+harga+"', Stok='"+stok+"' where ProdukID='"+idproduk+"'";
+    String sql = "update produk set NamaProduk='"+namaproduk+"', Harga='"+harga+"', Stok='"+stok+"' where ProdukID='"+ProdukID+"'";
     pst = konek.prepareStatement(sql);
     pst.execute();
-    JOptionPane.showMessageDialog(null, "Data Berhasil Diupdate");
+    JOptionPane.showMessageDialog(null, "Data Berhasil Diedit");
 } catch (Exception e) {
-    JOptionPane.showMessageDialog(null, "Data Gagal Diupdate");
+    JOptionPane.showMessageDialog(null, "Data Gagal Diedit");
 }
 updateTabel();
 mulai();        // TODO add your handling code here:

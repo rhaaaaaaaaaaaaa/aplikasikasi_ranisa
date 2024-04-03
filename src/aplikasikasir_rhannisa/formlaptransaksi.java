@@ -51,12 +51,14 @@ String tanggal, tanggal12, sql;
         tbllaptransaksi = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
         tbldataproduk = new javax.swing.JTable();
+        btnkeluar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
         jLabel1.setText("Sebelum Tanggal");
 
+        btncari1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-search-20_1.png"))); // NOI18N
         btncari1.setText("CARI");
         btncari1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -70,6 +72,7 @@ String tanggal, tanggal12, sql;
         jLabel3.setFont(new java.awt.Font("Arial Black", 1, 12)); // NOI18N
         jLabel3.setText("s/d");
 
+        btncari2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-search-20.png"))); // NOI18N
         btncari2.setText("CARI");
         btncari2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -80,7 +83,13 @@ String tanggal, tanggal12, sql;
         jLabel4.setFont(new java.awt.Font("Arial Black", 1, 12)); // NOI18N
         jLabel4.setText("Setelah Tanggal");
 
+        btncari3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-search-20.png"))); // NOI18N
         btncari3.setText("CARI");
+        btncari3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btncari3ActionPerformed(evt);
+            }
+        });
 
         tbllaptransaksi.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -111,7 +120,20 @@ String tanggal, tanggal12, sql;
                 "DetailID", "ProdukID", "Harga", "Jumlah Produk", "Subtotal"
             }
         ));
+        tbldataproduk.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbldataprodukMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tbldataproduk);
+
+        btnkeluar.setFont(new java.awt.Font("Arial Black", 1, 12)); // NOI18N
+        btnkeluar.setText("Keluar");
+        btnkeluar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnkeluarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -134,12 +156,16 @@ String tanggal, tanggal12, sql;
                         .addContainerGap(58, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btncari3)
                             .addComponent(setelahtgl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btncari2)
                             .addComponent(btncari1)
                             .addComponent(sebelumtgl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                        .addGap(0, 242, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btncari3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnkeluar)
+                        .addGap(85, 85, 85))))
             .addGroup(layout.createSequentialGroup()
                 .addGap(16, 16, 16)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -169,7 +195,9 @@ String tanggal, tanggal12, sql;
                 .addGap(18, 18, 18)
                 .addComponent(setelahtgl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btncari3)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btncari3)
+                    .addComponent(btnkeluar))
                 .addGap(31, 31, 31)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -181,7 +209,17 @@ String tanggal, tanggal12, sql;
     }// </editor-fold>//GEN-END:initComponents
 
     private void btncari2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncari2ActionPerformed
-        // TODO add your handling code here:
+try { 
+    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+    tanggal = format.format(daritgl.getDate());
+    tanggal = format.format(sampaitgl.getDate());
+    sql = "select * from penjualan where TanggalPenjualan between '"+tanggal+"' and '"+tanggal+"'";
+    pst = koneksi.prepareStatement(sql);
+    rst = pst.executeQuery();
+    tbllaptransaksi.setModel(DbUtils.resultSetToTableModel(rst));
+} catch (Exception e) {
+    JOptionPane.showMessageDialog(null, "Data Tidak Tampil!");
+}            // TODO add your handling code here:
     }//GEN-LAST:event_btncari2ActionPerformed
 
     private void btncari1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncari1ActionPerformed
@@ -210,6 +248,27 @@ try{
     JOptionPane.showMessageDialog(null, e);// TODO add your handling code here:
     }//GEN-LAST:event_tbllaptransaksiMouseClicked
     }
+    private void btncari3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncari3ActionPerformed
+      try { 
+    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+    tanggal = format.format(setelahtgl.getDate());
+    sql = "select * from penjualan where TanggalPenjualan > '"+tanggal+"'";
+    pst = koneksi.prepareStatement(sql);
+    rst = pst.executeQuery();
+    tbllaptransaksi.setModel(DbUtils.resultSetToTableModel(rst));
+} catch (Exception e) {
+    JOptionPane.showMessageDialog(null, "Data Tidak Tampil!");
+}         // TODO add your handling code here:
+    }//GEN-LAST:event_btncari3ActionPerformed
+
+    private void btnkeluarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnkeluarActionPerformed
+this.dispose();         // TODO add your handling code here:
+    }//GEN-LAST:event_btnkeluarActionPerformed
+
+    private void tbldataprodukMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbldataprodukMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tbldataprodukMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -249,6 +308,7 @@ try{
     private javax.swing.JButton btncari1;
     private javax.swing.JButton btncari2;
     private javax.swing.JButton btncari3;
+    private javax.swing.JButton btnkeluar;
     private com.toedter.calendar.JDateChooser daritgl;
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;

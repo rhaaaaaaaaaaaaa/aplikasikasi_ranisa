@@ -14,7 +14,7 @@ public class Ujikom_rhannisa {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-         String nisn, nama, karakter;
+        String nisn,nama,karakter;
         nisn="22112005";
         nama="Rhannisa";
         karakter="Belajar33";
